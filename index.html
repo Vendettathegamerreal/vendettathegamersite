@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <meta charset="UTF-8">
+    <title>Vendettathegamerreal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <style>
+        :root {
+            --primary: rgba(24, 255, 43, 0.7);
+            --primary-dark: rgba(40, 105, 115, 0.7);
+            --primary-light: rgba(0, 76, 255, 0.682);
+            --glass: rgba(255,255,255,0.1);
+            --glass-edge: rgba(255,255,255,0.2);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        
+        @keyframes particleMove {
+            0% { transform: translate(0, 0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(var(--move-x), var(--move-y)); opacity: 0; }
+        }
+        
+        @keyframes dropIn {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(0); }
+            to { transform: translateY(100%); }
+        }
+        
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; 
+        }
+        
+        body { 
+            background: #000000;
+            color: #fff; 
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; 
+            min-height: 100vh;
+            position: fixed; 
+            animation: dropIn 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        body.slide-down {
+            animation: slideDown 0.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+        
+        .app-container { 
+            max-width: 480px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            display: flex; 
+            flex-direction: column;
+            position: relative;
+            min-height: 100vh;
+            box-sizing: border-box;
+            padding-left: max(20px, env(safe-area-inset-left));
+            padding-right: max(20px, env(safe-area-inset-right));
+            padding-top: max(40px, env(safe-area-inset-top));
+            padding-bottom: max(40px, env(safe-area-inset-bottom));
+        }
+        
+        .app-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(0, 106, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+            animation: float 15s ease-in-out infinite;
+        }
+        
+        .header { 
+            text-align: center; 
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .official-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff; 
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            display: inline-block;
+            padding: 0 10px;
+        }
+        
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 260px; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            appearance: none;
+            background: rgba(22, 64, 161, 0.59);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            outline: none;
+            box-shadow: 
+                0 4px 15px rgba(55, 9, 240, 0.2),
+                0 0 0 1px #ff000014;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+        
+        .btn:hover::before {
+            opacity: 0.15;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-main {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white !important; 
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.15);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn-main::before {
+            opacity: 0.3;
+        }
+        
+        .btn-main:hover::before {
+            opacity: 0.4;
+        }
+        
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 0px;
+        }
+        
+        .disclaimer {
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            margin-top: auto;
+            padding-top: 2px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            filter: blur(0.5px);
+            animation: particleMove 10s infinite linear;
+            will-change: transform;
+        }
+        
+        @media (max-width: 480px) {
+            .app-container {
+                padding: 50px 16px;
+                padding-left: max(16px, env(safe-area-inset-left));
+                padding-right: max(16px, env(safe-area-inset-right));
+                padding-top: max(16px, env(safe-area-inset-top));
+                padding-bottom: max(50px, env(safe-area-inset-bottom));
+            }
+            
+            .official-label {
+                font-size: 13px;
+                margin-bottom: 12px;
+            }
+            
+            .btn-container {
+                width: 300px;
+            }
+            
+            .btn {
+                padding: 16px 20px;
+                font-size: 20px;
+            }
+            
+            .btn-icon {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="app-container">
+        <div class="header">
+            <div class="official-label">ОФИЦИАЛЬНЫЙ САЙТ</div>
+        </div>
+        
+        <div class="btn-container">
+            <a href="https://jamsterringtone2006site.pages.dev/" class="btn btn-main">
+                Jamster Ringtone 2006 Site Mirror 1
+            </a>
+            <a href="https://jamsterringtone2006site.netlify.app/" class="btn btn-main">
+                Jamster Ringtone 2006 Site Mirror 2
+            </a>
+            <a href="https://github.com/Vendettathegamerreal/jamsterjambaringtonesite2006" class="btn btn-main">
+                Jamster Ringtone 2006 Site Source Code
+            </a>
+
+            <a href="https://github.com/Vendettathegamerreal/jamsterjambaringtonesite2006/issues" class="btn btn-main">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+                </svg>
+                ТЕХ. ПОДДЕРЖКА
+            </a>
+            
+            <a href="https://www.youtube.com/@vendettathegamer" class="btn btn-main" id="legitCheckBtn">
+                <img src="youtubeicon.png" alt="youtube" class="btn-icon" />
+                YOUTUBE КАНАЛ
+            </a>
+            
+            <a href="https://github.com/Vendettathegamerreal" class="btn">
+                <img src="githubicon.png" alt="github" class="btn-icon" />
+                МОЙ GITHUB
+            </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 480 ? 30 : 60;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 4 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const moveX = (Math.random() - 0.5) * 300;
+                const moveY = (Math.random() - 0.5) * 300;
+                const duration = 10 + Math.random() * 20;
+                const delay = Math.random() * 10;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.opacity = Math.random() * 0.3 + 0.1;
+                particle.style.setProperty('--move-x', `${moveX}px`);
+                particle.style.setProperty('--move-y', `${moveY}px`);
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>
