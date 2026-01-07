@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html lang="en">
+<title>Another Easter egg...</title>
+
+<style>
+#container,#eyes{transform:translate(-50%,-50%);position:absolute}
+#container,#eyes,.eye{position:absolute}
+body{
+  background:url(background.jpg) 0 0/800px 256px;
+  image-rendering:pixelated
+}
+#container{
+  width:500px;
+  height:620px;
+  top:47%;
+  left:50%;
+  pointer-events:none
+}
+#container img{
+  width:100%;
+  height:100%;
+  z-index:3;
+  pointer-events:none
+}
+#image {
+  width: 337px;
+  height: 438px;
+
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+
+  transform: none;
+  scale: 1;
+}
+
+</style>
+
+<div id="container">
+  <div id="image"></div>
+</div>
+
+<img id="image2" src="smg42.png" width="900" style="right:50px;bottom:-222px;display:none;position:absolute" title="smg4 jumpscare">
+
+<script>
+const eyes = document.querySelectorAll(".eye");
+
+window.addEventListener("mousemove", e=>{
+  eyes.forEach(n=>{
+    var t=n.getBoundingClientRect(),
+    l=(e.pageX-t.left)/40+"px",
+    r=(e.pageY-t.top)/50+"px";
+    n.style.transform="translate3d("+l+","+r+",0px)";
+  });
+});
+
+var audio = new Audio("/easteregg.opus");
+
+function enterFullscreen(){
+  let e=document.documentElement;
+  if(e.requestFullscreen) e.requestFullscreen();
+  else if(e.mozRequestFullScreen) e.mozRequestFullScreen();
+  else if(e.webkitRequestFullscreen) e.webkitRequestFullscreen();
+  else if(e.msRequestFullscreen) e.msRequestFullscreen();
+
+  amb.pause();
+  amb.loop=false;
+  sceneB();
+  audio.play();
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+  ["#eyes","#image"].forEach(function(sel){
+    var n=document.querySelector(sel),
+    t=`bounceX-${Math.random().toString(36).substring(7)}`,
+    l=`bounceY-${Math.random().toString(36).substring(7)}`,
+    r=`@keyframes ${t}{0%{margin-left:0}25%{margin-left:5px}50%{margin-left:-10px}100%{margin-left:0}}`,
+    s=`@keyframes ${l}{0%{margin-top:0}35%{margin-top:20px}100%{margin-top:0}}`,
+    o=document.styleSheets[0];
+
+    o.insertRule(r,o.cssRules.length);
+    o.insertRule(s,o.cssRules.length);
+    n.style.animation=`${t} 6s linear infinite, ${l} 6s linear infinite`;
+  });
+});
+
+document.addEventListener("mousemove",function(e){
+  let n=e.clientX,
+      t=e.clientY,
+      l=window.innerWidth,
+      r=window.innerHeight;
+
+  if(n<=130 && t<=130) enterFullscreen();
+  else if(n>=l-120 && t<=120) enterFullscreen();
+  else if(n<=10 || n>=l || t<=10 || t>=r) enterFullscreen();
+});
+
+function sceneB(){
+  setTimeout(()=>{
+    document.querySelectorAll("*").forEach(e=>{
+      e.style.filter="saturate(43) brightness(0.1)";
+    });
+  },100);
+
+  document.body.style.backgroundImage="url('./background.jpg')";
+  document.body.style.overflow="hidden";
+
+  setTimeout(()=>{
+    document.querySelectorAll("*").forEach(e=>{
+      e.style.filter="none";
+    });
+  },200);
+
+  var e=document.getElementById("container");
+  if(e) e.style.display="none";
+
+  var n=document.getElementById("image2");
+  if(n) n.style.display="block";
+
+  setTimeout(()=>{
+    window.location.href="/";
+  },1900);
+}
+
+const amb = new Audio("./background.mp3");
+setTimeout(()=>{ amb.play(); },256);
+amb.loop=true;
+
+document.addEventListener("DOMContentLoaded", function () {
+  const image = document.getElementById("image");
+
+  image.style.backgroundImage = "url('/smg4.png')";
+  image.style.width = "337px";
+  image.style.height = "438px";
+  image.style.backgroundRepeat = "no-repeat";
+  image.style.backgroundPosition = "center";
+});
+
+</script>
+
+</html>
